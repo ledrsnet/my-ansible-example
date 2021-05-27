@@ -1,0 +1,23 @@
+---
+- hosts: dbmaster
+  remote_user: root
+
+  roles:
+    - dbmaster
+
+- hosts: dbslave
+  remote_user: root
+
+  roles:
+    - dbslave
+
+- hosts: dbmaster
+  gather_facts: no
+  tasks:
+    - name: modify mysql root password
+      shell: mysqladmin -uroot password "123456"
+
+- hosts: mycatservers
+  roles:
+    - mycat  
+  

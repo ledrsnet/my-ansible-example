@@ -1,0 +1,18 @@
+---
+# tasks file for mycat
+- name: install java mariadb
+  yum: name=java,mariadb state=present
+- name: create apps directory
+  file: path=/apps state=directory
+- name: download package
+  unarchive: src=http://dl.mycat.org.cn/1.6.7.4/Mycat-server-1.6.7.4-release/Mycat-server-1.6.7.4-release-20200105164103-linux.tar.gz dest=/apps/ copy=no
+- name: add mycat path variable
+  shell: echo 'PATH=/apps/mycat/bin:$PATH' > /etc/profile.d/mycat.sh && echo 'wrapper.startup.timeout=300' >> /apps/mycat/conf/wrapper.conf 
+- name: schema config
+  template: src=schema.xml.j2 dest=/apps/mycat/conf/schema.xml
+- name: start Mycat
+  shell: /apps/mycat/bin/mycat start
+- name: wait_for port up
+  wait_for: port=8066 delay=10
+- name: display result
+  debug: msg="mycat start successfully..."

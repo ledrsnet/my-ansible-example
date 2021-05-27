@@ -1,0 +1,15 @@
+---
+# tasks file for dbmaster
+- name: install mysql
+  yum: name=mariadb-server state=present
+- name: mysql config
+  template: src=my.cnf.j2 dest=/etc/my.cnf.d/mariadb-server.cnf
+- name: Start service
+  service: name=mariadb state=started enabled=yes
+- name: record logIndex
+  shell: mysql -e 'show master logs' | awk 'NR==2{print $1,$2}'
+  register: tempvb
+- name: set global vb
+  set_fact: logIndex={{tempvb.stdout}}
+- name: grant repluser
+  script: repluser.sh

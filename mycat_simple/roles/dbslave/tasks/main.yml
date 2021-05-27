@@ -1,0 +1,14 @@
+---
+# tasks file for dbmaster
+- name: install mysql
+  yum: name=mariadb-server state=present
+- name: mysql config
+  template: src=my.cnf.j2 dest=/etc/my.cnf.d/mariadb-server.cnf
+- name: Start service
+  service: name=mariadb state=started enabled=yes
+- name: change master
+  script: changeMaster.sh {{ groups['dbmaster'][0] }} "{{ hostvars['10.0.0.28']['logIndex'] }}"
+- name: state
+  shell:  mysql -e 'show slave status\G' | grep -A1 Slave_IO_Running
+  register: result
+  failed_when:  result.stdout.count('Yes') <2

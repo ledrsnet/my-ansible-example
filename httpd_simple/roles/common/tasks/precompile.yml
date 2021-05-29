@@ -2,7 +2,7 @@
   yum: name="gcc,make,pcre-devel,openssl-devel,expat-devel,wget,bzip2"
   when: ansible_distribution == "CentOS"
 - name: apt install packages
-  apt: name="gcc,make,pcre-devel,openssl-devel,expat-devel,wget,bzip2"
+  apt: name="gcc,make,libapr1-dev,libaprutil1-dev,libpcre3,libpcre3-dev,libssl-dev,wget"
   when: ansible_distribution != "CentOS"
 - name: get packages and decompress
   unarchive: src={{ item }} dest={{ pk_dir }} copy=no

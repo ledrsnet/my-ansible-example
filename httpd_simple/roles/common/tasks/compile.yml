@@ -1,0 +1,13 @@
+- name: generate httpd makefile
+  shell: 
+    chdir: "{{ pk_dir }}{{ filenames.httpd }}"
+    cmd: ./configure --prefix={{ install_path }} --enable-so --enable-ssl --enable-cgi --enable-rewrite --with-zlib --with-pcre --with-included-apr --enable-modules=most --enable-mpms-shared=all --with-mpm=prefork
+- name: compile httpd
+  make:
+    chdir: "{{ pk_dir }}{{ filenames.httpd }}"
+    target: install
+    file: "{{ pk_dir }}{{ filenames.httpd }}/Makefile"
+
+
+
+

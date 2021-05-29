@@ -1,0 +1,12 @@
+---
+# vars file for common
+pk_dir: /usr/local/src/
+install_path: /apps/httpd24/
+packages:
+  - https://downloads.apache.org/apr/apr-1.7.0.tar.bz2
+  - https://downloads.apache.org//apr/apr-util-1.6.1.tar.bz2
+  - https://downloads.apache.org//httpd/httpd-2.4.46.tar.bz2
+filenames:
+  apr: "{{ packages[0].partition('.tar')[0]|basename }}"
+  apr_util: "{{ packages[1].partition('.tar')[0]|basename }}"
+  httpd: "{{ packages[2].partition('.tar')[0]|basename }}"

@@ -1,0 +1,21 @@
+- name: yum install packages
+  yum: name="gcc,make,pcre-devel,openssl-devel,expat-devel,wget,bzip2"
+  when: ansible_distribution == "CentOS"
+- name: apt install packages
+  apt: name="gcc,make,pcre-devel,openssl-devel,expat-devel,wget,bzip2"
+  when: ansible_distribution != "CentOS"
+- name: get packages and decompress
+  unarchive: src={{ item }} dest={{ pk_dir }} copy=no
+  with_items: "{{ packages }}"
+- name: register apr
+  stat: path={{ pk_dir }}{{ filenames.apr }}
+  register: apr_result
+- name: register apr_util_result
+  stat: path={{ pk_dir }}{{ filenames.apr_util }}
+  register: apr_util_result
+- name: mv apr
+  shell: mv {{ pk_dir }}{{ filenames.apr }} {{ pk_dir }}{{ filenames.httpd }}/srclib/apr
+  when: apr_result.stat.exists
+- name: mv apr_util
+  shell:  mv {{ pk_dir }}{{ filenames.apr_util }} {{ pk_dir }}{{ filenames.httpd }}/srclib/apr-util
+  when: apr_util_result.stat.exists

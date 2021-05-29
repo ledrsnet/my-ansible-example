@@ -1,0 +1,6 @@
+---
+# tasks file for common
+#- include: precompile.yml
+#- include: compile.yml
+- include: postcompile.yml
+ 

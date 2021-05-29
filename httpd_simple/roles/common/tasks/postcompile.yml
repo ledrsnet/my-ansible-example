@@ -1,0 +1,20 @@
+- name: create apache user
+  user: name=apache system=yes create_home=no shell=/sbin/nologin
+- name: modify config user
+  lineinfile:
+    path: {{ install_path }}/conf/httpd.conf
+    regexp: '^User.*'
+    line: 'User apache'
+- name: modify config group
+  lineinfile:
+    path: {{ install_path }}/conf/httpd.conf
+    regexp: '^Group.*'
+    line: 'Group apache'
+- name: config PATH Variable
+  shell: echo 'PATH="{{ install_path }}/bin:$PATH"' > /etc/profile.d/httpd.sh
+- name: copy service file
+  copy: src=httpd.service dest=/lib/systemd/system/httpd.service
+- name: reload service daemon
+  shell: systemctl daemon-reload
+- name: start Service
+  service: name=httpd.service state=started enabled=yes

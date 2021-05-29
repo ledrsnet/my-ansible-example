@@ -2,12 +2,12 @@
   user: name=apache system=yes create_home=no shell=/sbin/nologin
 - name: modify config user
   lineinfile:
-    path: {{ install_path }}/conf/httpd.conf
+    path: "{{ install_path }}/conf/httpd.conf"
     regexp: '^User.*'
     line: 'User apache'
 - name: modify config group
   lineinfile:
-    path: {{ install_path }}/conf/httpd.conf
+    path: "{{ install_path }}/conf/httpd.conf"
     regexp: '^Group.*'
     line: 'Group apache'
 - name: config PATH Variable

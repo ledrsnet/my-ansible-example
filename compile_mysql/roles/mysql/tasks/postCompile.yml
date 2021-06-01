@@ -1,0 +1,19 @@
+- name: prepare Path Variable
+  shell: echo 'PATH=/apps/mysql/bin:$PATH' > /etc/profile.d/mysql.sh &&  source /etc/profile.d/mysql.sh
+- name: datastatus
+  stat: path={{ mysql_data_path }}
+  register: dataResult
+- name: initdb
+  shell:
+    chdir: "{{ install_path }}"
+    cmd: scripts/mysql_install_db --datadir={{ mysql_data_path }} --user=mysql
+  when: dataResult.stat.exists!=true
+- name: copy config
+  copy: src=my.cnf dest=/etc/my.cnf
+- name: copy service script
+  shell: cp {{ install_path }}/support-files/mysql.server /etc/init.d/mysqld
+- name: bootstrap Start mysqld
+  shell: chkconfig --add mysqld
+- name: start service mysqld
+  shell: service mysqld start
+

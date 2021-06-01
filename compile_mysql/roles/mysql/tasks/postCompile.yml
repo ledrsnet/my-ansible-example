@@ -1,7 +1,7 @@
 - name: prepare Path Variable
   shell: echo 'PATH={{ install_path }}/bin:$PATH' > /etc/profile.d/mysql.sh &&  source /etc/profile.d/mysql.sh
 - name: datastatus
-  stat: path={{ mysql_data_path }}
+  stat: path={{ mysql_data_path }}/mysql
   register: dataResult
 - name: initdb
   shell:

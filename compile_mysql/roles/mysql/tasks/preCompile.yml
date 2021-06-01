@@ -4,7 +4,7 @@
     state: present
 
 - name: create mysql user
-  user: name=mysql system=yes create_home=no home=/data/mysql shell=/sbin/nologin
+  user: name=mysql system=yes create_home=no home={{ mysql_data_path }} shell=/sbin/nologin
 - name: create mysql data dir
   file: path={{ mysql_data_path }} state=directory owner=mysql group=mysql
 - name: download src code

@@ -1,0 +1,21 @@
+- name: change app owner
+  file: path={{ install_path }} owner=nginx group=nginx recurse=true
+- name: create soft link
+  file: src={{ install_path }}/sbin/nginx dest=/usr/sbin/nginx state=link
+- name: copy nginx service file
+  template: src=nginx.service.j2 dest=/usr/lib/systemd/system/nginx.service
+  when: ansible_distribution == "CentOS"
+- name: copy nginx service file
+  template: src=nginx.service.j2 dest=/lib/systemd/system/nginx.service
+  when: ansible_distribution != "CentOS"
+- name: mkdir pid dir
+  file: path={{ pid_dir }} state=directory
+- name: modify pid path in nginx.conf
+  lineinfile:
+    path: "{{ install_path }}/conf/nginx.conf"
+    regexp: '^#pid'
+    line: "pid {{ pid_dir }}/nginx.pid;"
+- name: reload service daemon
+  shell: systemctl daemon-reload
+- name: start Service
+  service: name=nginx state=started enabled=yes

@@ -1,0 +1,9 @@
+- name: configure scripts
+  shell: 
+    chdir: "{{ pk_dir }}{{ filenames.nginx }}"
+    cmd: ./configure --prefix={{ install_path }} --user=nginx --group=nginx --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_stub_status_module --with-http_gzip_static_module --with-pcre --with-stream --with-stream_ssl_module --with-stream_realip_module
+- name: compile nginx
+  make: 
+    chdir: "{{ pk_dir }}{{ filenames.nginx }}"
+    target: install
+    file: "{{ pk_dir }}{{ filenames.nginx }}/Makefile"

@@ -1,0 +1,15 @@
+- name: install gcc..
+  yum: name="gcc,pcre-devel,openssl-devel,zlib-devel" state=present
+  when: ansible_distribution == "CentOS"
+- name: apt install packages
+  apt: name="gcc,make,libapr1-dev,libaprutil1-dev,libpcre3,libpcre3-dev,libssl-dev,wget"
+  when: ansible_distribution != "CentOS"
+- name: add user nginx
+  user: name=nginx shell=/sbin/nologin create_home=no
+- name: download nginx src packages
+  unarchive: src={{ packages[0] }} dest={{ pk_dir}} copy=no
+  register: var1
+  until: var1 is succeeded
+  retries: 5
+
+

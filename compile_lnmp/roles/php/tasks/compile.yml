@@ -1,0 +1,22 @@
+- name: generate php makefile
+  shell: 
+    chdir: "{{ src_store_path }}{{ src_code_path }}"
+    cmd: "./configure --prefix={{ install_path }} \
+          --enable-mysqlnd \
+		  --with-mysqli=mysqlnd \
+          --with-pdo-mysql=mysqlnd \
+          --with-openssl \
+          --with-zlib \
+          --with-config-file-path=/etc \
+          --with-config-file-scan-dir=/etc/php.d \
+          --enable-mbstring \
+          --enable-xml \
+          --enable-sockets \
+          --enable-fpm \
+          --enable-maintainer-zts \
+          --disable-fileinfo"
+- name: compile {{ php }} 
+  make:
+    chdir: "{{ src_store_path }}{{ src_code_path }}"
+    target: install
+    file: "{{ src_store_path }}{{ src_code_path }}/Makefile"

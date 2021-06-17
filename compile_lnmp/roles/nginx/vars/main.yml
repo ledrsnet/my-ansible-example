@@ -1,0 +1,11 @@
+---
+# vars file for nginx
+pk_dir: /usr/local/src/
+install_path: /apps/nginx/
+pid_dir: "{{ install_path }}/run/"
+server_name: www.maple.com
+data_dir: /data/nginx/
+packages:
+  - https://nginx.org/download/nginx-1.18.0.tar.gz
+filenames:
+  nginx: "{{ packages[0].partition('.tar')[0]|basename }}"

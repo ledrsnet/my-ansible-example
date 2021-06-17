@@ -1,0 +1,14 @@
+- name: yum install Packages
+  yum: 
+    name: "{{ yum_pks }}" 
+    state: present
+
+- name: create mysql user
+  user: name=mysql system=yes create_home=no home={{ mysql_data_path }} shell=/sbin/nologin
+- name: create mysql data dir
+  file: path={{ mysql_data_path }} state=directory owner=mysql group=mysql
+- name: download src code
+  unarchive: src={{ url }}{{ mysql }} dest={{ src_store_path }} copy=no
+  register: var1
+  until: var1 is succeeded
+  retries: 5

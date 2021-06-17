@@ -1,0 +1,6 @@
+---
+- name: download wordpress 
+  unarchive: src=https://cn.wordpress.org/wordpress-5.4.2-zh_CN.tar.gz dest=/data/nginx/ copy=no owner=nginx group=nginx
+  register: var1
+  until: var1 is succeeded
+  retries: 5

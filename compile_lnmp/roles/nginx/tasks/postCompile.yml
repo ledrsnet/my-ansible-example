@@ -1,0 +1,22 @@
+- name: change app owner
+  file: path={{ install_path }} owner=nginx group=nginx recurse=true
+- name: create soft link
+  file: src={{ install_path }}/sbin/nginx dest=/usr/sbin/nginx state=link
+- name: copy nginx service file
+  template: src=nginx.service.j2 dest=/usr/lib/systemd/system/nginx.service
+  when: ansible_distribution == "CentOS"
+- name: copy nginx service file
+  template: src=nginx.service.j2 dest=/lib/systemd/system/nginx.service
+  when: ansible_distribution != "CentOS"
+- name: mkdir pid dir
+  file: path={{ pid_dir }} state=directory
+- name: copy nginx configuration file
+  template: src=nginx.conf.j2 dest="{{ install_path }}conf/nginx.conf" force=true
+- name: reload service daemon
+  shell: systemctl daemon-reload
+- name: start Service
+  service: name=nginx state=started enabled=yes
+- name: create nginx data directory
+  file: path="{{ data_dir }}/wordpress" state=directory
+- name: create test php file
+  copy: src=test.php dest={{ data_dir }}/wordpress/test.php

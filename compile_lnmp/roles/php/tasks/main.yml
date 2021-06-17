@@ -1,0 +1,6 @@
+---
+# tasks file for php
+- include: preCompile.yml
+- include: compile.yml
+- include: postCompile.yml
+

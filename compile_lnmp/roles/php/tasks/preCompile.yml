@@ -1,0 +1,11 @@
+- name: yum install packages
+  yum: 
+    name: "{{ yum_pks }}"
+    state: present
+    #- name: get "{{ php }}" src code
+  #  get_url: 
+  #  url: "{{ url }}{{ php }}"
+  #  dest: "{{ src_store_path }}"
+- name: unarchive "{{ php }}" src code
+  unarchive: src="{{ php }}" dest="{{ src_store_path }}" copy=yes
+

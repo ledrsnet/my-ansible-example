@@ -1,0 +1,42 @@
+- name: prepare Path Variable
+  shell: echo 'PATH={{ install_path }}/bin:$PATH' > /etc/profile.d/mysql.sh &&  source /etc/profile.d/mysql.sh
+- name: datastatus
+  stat: path={{ mysql_data_path }}/mysql
+  register: dataResult
+- name: initdb
+  shell:
+    chdir: "{{ install_path }}"
+    cmd: scripts/mysql_install_db --datadir={{ mysql_data_path }} --user=mysql
+  when: dataResult.stat.exists!=true
+- name: copy config
+  copy: src=my.cnf dest=/etc/my.cnf
+- name: copy service script
+  shell: cp {{ install_path }}/support-files/mysql.server /etc/init.d/mysqld
+- name: bootstrap Start mysqld
+  shell: chkconfig --add mysqld
+- name: start service mysqld
+  shell: service mysqld start
+- name: modify mysql root password
+  mysql_user:
+    login_user: root
+    login_password: ""
+    login_unix_socket: "{{ mysql_data_path }}/mysql.sock"
+    name: root
+    password: "{{ mysql_password }}"
+- name: create wordpress database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_password }}"
+    login_unix_socket: "{{ mysql_data_path }}/mysql.sock"
+    name: "{{ wordpress_db }}"
+    state: present
+- name: create wordpress user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_password }}"
+    login_unix_socket: "{{ mysql_data_path }}/mysql.sock"
+    name: "{{ wordpress_user }}"
+    host: "{{ wordpress_host }}"
+    password: "{{ wordpress_password }}"
+    priv: '{{ wordpress_db }}.*:ALL'
+    state: present

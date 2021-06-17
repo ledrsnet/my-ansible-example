@@ -1,0 +1,15 @@
+---
+# vars file for php
+yum_pks:
+  - gcc
+  - openssl-devel
+  - libxml2-devel
+  - bzip2-devel
+  - libmcrypt-devel
+  - sqlite-devel
+  - oniguruma-devel
+php: php-7.4.11.tar.xz
+url: https://www.php.net/distributions/
+src_store_path: /usr/local/src/
+src_code_path: "{{ php.partition('.tar')[0] }}"
+install_path: /apps/php

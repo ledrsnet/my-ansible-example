@@ -1,0 +1,12 @@
+---
+- hosts: dbservers
+
+  roles:
+    - mysql
+
+- hosts: webservers
+  
+  roles:
+    - php
+    - nginx
+    - wordpress

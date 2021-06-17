@@ -8,7 +8,7 @@
     chdir: "{{ install_path }}/etc"
     cmd: cp php-fpm.conf.default php-fpm.conf
 - name: cp www.conf
-  copy: src=www.conf dest="{{ install_path }}/etc/conf.d/www.conf"
+  copy: src=www.conf dest="{{ install_path }}/etc/php-fpm.d/www.conf"
 - name: cp php-fpm service
   shell:
     cmd: cp "{{ src_store_path }}{{ src_code_path }}/sapi/fpm/php-fpm.service" /usr/lib/systemd/system/php-fpm.service

@@ -17,7 +17,12 @@
 
 - name: Configuration drbd,nfs-server,keepalived
   tags:
-    - drbd
+    - nfs-server-ha
   include: nfs-server-playbook-ha.yml
   when: nfs.ha.enable == true
 
+- name: Configuration drbd,nfs-server,keepalived
+  tags:
+    - nfs-server
+  include: nfs-server-playbook.yml
+  when: nfs.ha.enable == false

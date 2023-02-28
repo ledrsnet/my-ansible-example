@@ -2,7 +2,7 @@
 # Variables listed here are applicable to all host groups
 nfs:
   ha:
-   enable: false # 开启ha，需要两台nfs-server，在hosts中配置。且两台server使用相同类型规格大小的磁盘。最好使用lvm可以扩容。
+   enable: true # true/false 开启ha，需要两台nfs-server，在hosts中配置。且两台server使用相同类型规格大小的磁盘。最好使用lvm可以扩容。
    vip: 10.0.0.222/24 # ha true使用这个vip共享，false使用 hosts中nfs-server第一个主机
    drbd_disk: /dev/vg01/lv01
    interface: ens33  # keepalived 通告接口

@@ -1,8 +1,4 @@
 ---
-- name: Create {{ nfs.nfs_path }} Directory
-  file:
-    path: "{{ nfs.nfs_path }}"
-    state: directory
 - name: Install NFS Server
   package:
     name: nfs-kernel-server

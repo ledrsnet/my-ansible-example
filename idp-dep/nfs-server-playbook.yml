@@ -1,0 +1,5 @@
+- name: Configuration nfs-server
+  hosts: "{{ groups['nfs-server'][0] }}"
+  remote_user: root
+  roles:
+    - nfs-server

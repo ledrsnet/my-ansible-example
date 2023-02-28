@@ -15,10 +15,10 @@
   roles:
     - nfs-common
 
-- name: deploy NFS Server
+- name: Configuration drbd
   hosts: nfs-server
   remote_user: root
   tags:
-    - nfs-server
+    - drbd
   roles:
-    - nfs-server
+    - drbd

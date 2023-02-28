@@ -1,0 +1,13 @@
+resource nfs {  ##资源名字，必须与资源文件名一致
+  disk {{ nfs.ha.drbd_disk }};  ##要存储的分区,这个硬盘不需要分区格式化。
+  device /dev/drbd0;  ##一共有16个设备，编号为0-15
+  meta-disk internal;
+
+  on {{ hostvars[groups['nfs-server'][0]]['ansible_hostname'] }} {  ##节点名称，地址
+    address {{ groups['nfs-server'][0] }}:7789;
+  }
+
+  on {{ hostvars[groups['nfs-server'][1]]['ansible_hostname'] }} {  ##节点名称，地址
+    address {{ groups['nfs-server'][1] }}:7789;
+  }
+}

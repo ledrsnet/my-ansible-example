@@ -1,0 +1,11 @@
+---
+- name: Install NFS common
+  package:
+    name: nfs-common
+    state: present
+  when: "ansible_distribution == 'Ubuntu'"
+- name: Install NFS common
+  package:
+    name: nfs-utils
+    state: present
+  when: "ansible_distribution == 'CentOS'"

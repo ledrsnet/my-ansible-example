@@ -1,0 +1,21 @@
+[nfs-server]
+10.0.0.203 ansible_connection=local
+10.0.0.204
+
+[nfs-common]
+10.0.0.205
+10.0.0.206
+
+[k8s-master]
+10.0.0.203 ansible_connection=local
+
+[k8s-node]
+10.0.0.204
+10.0.0.205
+
+[gpu-node]
+10.0.0.205
+
+[haproxy]
+10.0.0.203 ansible_connection=local
+10.0.0.204

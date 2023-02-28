@@ -1,0 +1,33 @@
+---
+- name: Copy limits.conf files
+  copy:
+    src: "limits.conf"
+    dest: "/etc/security/limits.conf"
+    owner: root
+    group: root
+    mode: '0644'
+- name: Copy sysctl.conf files
+  copy:
+    src: "sysctl.conf"
+    dest: "/etc/sysctl.conf"
+    owner: root
+    group: root
+    mode: '0644'
+- name: disable selinux
+  shell: sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  when: ansible_distribution == "CentOS"
+- name: disable swap
+  shell: sed -i '/swap/s/^/#/' /etc/fstab && swapoff -a
+- name: disable autoupgrade
+  shell: sed -Ei "s/(.*)1(.*)/\10\2/g" /etc/apt/apt.conf.d/10periodic /etc/apt/apt.conf.d/20auto-upgrades
+  when: ansible_distribution != "CentOS"
+- name: disable apport
+  systemd:
+    name: apport.service
+    enabled: no
+    state: stopped
+  when: ansible_distribution != "CentOS"
+- name: create /store/core directory
+  file:
+    path: /store/core
+    state: directory

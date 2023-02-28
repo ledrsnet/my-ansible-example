@@ -1,0 +1,5 @@
+# drbd module exists?
+/usr/sbin/modinfo -F filename drbd &>/dev/null
+if [ "$?" -eq 0 ];then 
+    /usr/sbin/modprobe drbd
+fi

@@ -1,13 +1,16 @@
 1. 安装ansible
+```bash
 yum install -y epel-release
 yum install -y ansible
 apt install -y ansible
+```
 2. 各节点root ssh免密
 3. 配置ansible
 - 配置ansible.cfg指定inventory文件路径
 - 配置hosts，修改主机
 - 修改group_vars/all参数
 4. ansible playbook 目前角色
+```bash
    system-init
    drbd
    nfs-common
@@ -18,3 +21,4 @@ apt install -y ansible
    #idp role
    #haproxy role
    #dns role
+```

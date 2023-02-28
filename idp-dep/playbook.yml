@@ -16,12 +16,8 @@
     - nfs-common
 
 - name: Configuration drbd,nfs-server,keepalived
-  hosts: nfs-server
-  remote_user: root
   tags:
     - drbd
-  roles:
-    - drbd
-    - nfs-server
-    - keepalived
+  include: nfs-server-playbook-ha.yml
+  when: nfs.ha.enable == true
 

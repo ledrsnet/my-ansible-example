@@ -1,0 +1,7 @@
+- name: Configuration drbd,nfs-server,keepalived
+  hosts: nfs-server
+  remote_user: root
+  roles:
+    - drbd
+    - nfs-server
+    - keepalived

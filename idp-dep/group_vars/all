@@ -3,6 +3,9 @@
 nfs:
   ha:
    enable: true # 开启ha，需要两台nfs-server，在hosts中配置。且两台server使用相同类型规格大小的磁盘。最好使用lvm可以扩容。
-   vip: 10.0.0.222 # ha true使用这个vip共享，false使用 hosts中nfs-server第一个主机
+   vip: 10.0.0.222/24 # ha true使用这个vip共享，false使用 hosts中nfs-server第一个主机
    drbd_disk: /dev/vg01/lv01
+   interface: ens33  # keepalived 通告接口
+   webhook: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f6955aba-7a71-429c-b534-c1259d2e98ba # ha切换通知
+   env_label: test #自定义环境标识，通知哪个环境发生了ha切换
   nfs_path: /data/

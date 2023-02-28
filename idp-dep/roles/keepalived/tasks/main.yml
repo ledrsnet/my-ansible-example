@@ -1,0 +1,29 @@
+---
+- name: Install Keepalived psmisc
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "keepalived"
+    - "psmisc"
+- name: Create keepalived configuration
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+- name: Create notify.sh configuration
+  template:
+    src: notify.sh.j2
+    dest: /etc/keepalived/notify.sh
+- name: Copy files to remote hosts
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/keepalived/{{ item }}"
+  with_items:
+    - "notify_master.sh"
+    - "notify_stop.sh"
+    - "notify_backup.sh"
+- name: Enable keepalived service
+  systemd:
+    name: keepalived.service
+    enabled: true
+    state: started

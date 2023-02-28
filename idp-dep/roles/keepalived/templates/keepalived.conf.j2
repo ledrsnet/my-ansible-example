@@ -1,0 +1,49 @@
+! Configuration File for keepalived
+
+global_defs {
+   notification_email {
+     acassen@firewall.loc
+     failover@firewall.loc
+     sysadmin@firewall.loc
+   }
+   notification_email_from Alexandre.Cassen@firewall.loc
+   smtp_server 192.168.200.1
+   smtp_connect_timeout 30
+   router_id {{ ansible_hostname }}
+}
+
+
+vrrp_script chk_nfs {
+    script "killall -0 nfsd"
+    interval 2
+    weight -40
+}
+
+vrrp_instance VI_1 {
+{% if ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname'] %}
+    state MASTER
+    priority 100
+{% else %}
+    state BACKUP
+    priority 80
+{% endif %}
+
+    interface {{ nfs.ha.interface }}
+    virtual_router_id 51
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1111
+    }
+    track_script {
+        chk_nfs
+    }
+ 
+    notify_stop /etc/keepalived/notify_stop.sh  #当服务停止时执行的脚本
+    notify_master /etc/keepalived/notify_master.sh  #当切换成主时执行的脚本
+    notify_backup /etc/keepalived/notify_backup.sh  #当切换成备时执行的脚本
+ 
+    virtual_ipaddress {
+        {{ nfs.ha.vip }} dev {{ nfs.ha.interface }} label {{ nfs.ha.interface }}:1  #表示将VIP绑定在指定网卡的指定子接口上
+    }
+}

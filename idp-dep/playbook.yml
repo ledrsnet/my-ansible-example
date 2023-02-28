@@ -15,18 +15,13 @@
   roles:
     - nfs-common
 
-- name: Configuration drbd
+- name: Configuration drbd,nfs-server,keepalived
   hosts: nfs-server
   remote_user: root
   tags:
     - drbd
   roles:
     - drbd
+    - nfs-server
+    - keepalived
 
-- name: Deploy NFS Server
-  hosts: nfs-server
-  remote_user: root
-  tags:
-    - nfs-server
-  roles:
-    - nfs-server

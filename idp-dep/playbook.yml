@@ -22,3 +22,11 @@
     - drbd
   roles:
     - drbd
+
+- name: Deploy NFS Server
+  hosts: nfs-server
+  remote_user: root
+  tags:
+    - nfs-server
+  roles:
+    - nfs-server

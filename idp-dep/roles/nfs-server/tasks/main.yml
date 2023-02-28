@@ -1,0 +1,27 @@
+---
+- name: Install NFS Server
+  package:
+    name: nfs-kernel-server
+    state: present
+  when: "ansible_distribution == 'Ubuntu'"
+- name: Install NFS Server
+  package:
+    name: nfs-utils
+    state: present
+  when: "ansible_distribution == 'CentOS'"
+- name: Create nfs configuration
+  template:
+    src: exports.j2
+    dest: /etc/exports
+- name: Enable nfs service
+  systemd:
+    name: nfs.service
+    enabled: true
+    state: started
+  when: "ansible_distribution == 'CentOS'"
+- name: Enable nfs service
+  systemd:
+    name: nfs-server.service
+    enabled: true
+    state: started
+  when: "ansible_distribution == 'Ubuntu'"

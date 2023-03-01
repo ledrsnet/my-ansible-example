@@ -113,10 +113,11 @@
     dev: /dev/drbd0
   when: disk_status.stdout.find("xfs") == -1 and ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname']
 
-- name: Mount /dev/drbd0 partition to "{{ nfs.nfs_path }}" directory
-  mount:
-    src: /dev/drbd0
-    path: "{{ nfs.nfs_path }}"
-    fstype: xfs
-    state: mounted
+- name: Check the mounted of a drbd
+  shell: df -hT | grep drbd0
+  register: mount_status
+  ignore_errors: true
   when: "ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname']"
+- name: Mount /dev/drbd0 partition to "{{ nfs.nfs_path }}" directory
+  shell: mount /dev/drbd0 "{{ nfs.nfs_path }}"
+  when: ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname'] and mount_status.stdout.find("drbd") == -1

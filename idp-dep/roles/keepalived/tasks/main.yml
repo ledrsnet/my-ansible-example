@@ -14,10 +14,16 @@
   template:
     src: notify.sh.j2
     dest: /etc/keepalived/notify.sh
+    owner: root
+    group: root
+    mode: '0777'
 - name: Copy files to remote hosts
   copy:
     src: "{{ item }}"
     dest: "/etc/keepalived/{{ item }}"
+    owner: root
+    group: root
+    mode: '0777'
   with_items:
     - "notify_master.sh"
     - "notify_stop.sh"

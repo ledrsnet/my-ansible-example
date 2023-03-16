@@ -94,6 +94,7 @@
 - name: Util drbdadm nfs Update
   shell: drbdadm status nfs
   register: result
+  max_fail_percentage: 1
   until: result.stdout.find("Inconsistent") == -1
   retries: 10000
   delay: 60

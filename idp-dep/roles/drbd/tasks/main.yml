@@ -94,7 +94,7 @@
 - name: Util drbdadm nfs Update
   shell: drbdadm status nfs
   register: result
-  until: result.stdout.find("peer-disk:UpToDate") != -1
+  until: result.stdout.find("peer-disk:Inconsistent") == -1
   retries: 10000
   delay: 60
 

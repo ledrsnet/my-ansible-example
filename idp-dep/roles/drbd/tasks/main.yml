@@ -60,7 +60,14 @@
     owner: root
     group: root
     mode: '0777'
-
+  when: "ansible_distribution == 'CentOS'"
+  
+- name: Initial modprobe drbd on Ubuntu
+  lineinfile:
+    path: /etc/modules
+    line: 'drbd'
+  when: "ansible_distribution != 'CentOS'"
+  
 - name: Create nfs res configuration
   template:
     src: nfs.res.j2
@@ -88,8 +95,8 @@
   shell: drbdadm status nfs
   register: result
   until: result.stdout.find("peer-disk:UpToDate") != -1
-  retries: 10
-  delay: 30
+  retries: 10000
+  delay: 60
 
 - name: Enable drbd service
   systemd:

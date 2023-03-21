@@ -117,9 +117,9 @@
 
 - name: Format disk if not formatted
   filesystem:
-    fstype: xfs
+    fstype: ext4
     dev: /dev/drbd0
-  when: disk_status.stdout.find("xfs") == -1 and ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname']
+  when: disk_status.stdout.find("ext4") == -1 and ansible_hostname == hostvars[groups['nfs-server'][0]]['ansible_hostname']
 
 - name: Check the mounted of a drbd
   shell: df -hT | grep drbd0
